@@ -13,7 +13,7 @@ use {
 };
 
 #[derive(Accounts)]
-#[instruction(amount: u64)]
+#[instruction(total_amount_to_recipient: u64)]
 pub struct CreateSplitwave<'info> {
     #[account(address = anchor_spl::associated_token::ID)]
     pub associated_token_program: Program<'info, AssociatedToken>,
@@ -59,7 +59,7 @@ pub struct CreateSplitwave<'info> {
     pub token_program: Program<'info, token::Token>,
 }
 
-pub fn handler<'info>(ctx: Context<CreateSplitwave>, amount: u64, participants: Vec<PartSplit>) -> Result<()> {
+pub fn handler<'info>(ctx: Context<CreateSplitwave>, total_amount_to_recipient: u64, participants: Vec<PartSplit>) -> Result<()> {
     // Get accounts.
     let authority = &ctx.accounts.authority;
     let mint = &ctx.accounts.mint;
@@ -67,11 +67,22 @@ pub fn handler<'info>(ctx: Context<CreateSplitwave>, amount: u64, participants: 
     let recipient = &ctx.accounts.recipient;
     let splitwave_token_account = &mut ctx.accounts.splitwave_token_account;
 
-    if amount == 0 {
+    if total_amount_to_recipient == 0 {
         return err!(SplitwaveError::ZeroAmount)
     }
 
+    //check if all the splits sum up to the total amount
+    let mut total_split = 0;
+    for part_split in participants.iter() {
+        total_split += part_split.split;
+    }
+    if total_split != total_amount_to_recipient {
+        return err!(SplitwaveError::InvalidSplit);
+    }
+
+
     let mut participants = participants;
+    participants.iter_mut().for_each(|participant| participant.paid = false);
     participants.sort_by_key(|part_split| part_split.participant);
     participants.dedup_by_key(|part_split| part_split.participant);
     let total_participants = participants.len();
@@ -86,15 +97,17 @@ pub fn handler<'info>(ctx: Context<CreateSplitwave>, amount: u64, participants: 
     let bump = *ctx.bumps.get("splitwave").unwrap();
 
     // Initialize the splitwave account.
-    splitwave.new(
-        bump,
-        amount,
-        authority.key(),
-        mint.key(),
-        recipient.key(),
-        participants,
-        splitwave_token_account.key(),
-    )?;
-
+    splitwave.bump = bump;
+    splitwave.total_amount_to_recipient = total_amount_to_recipient;
+    splitwave.amount_paid_to_splitwave = 0;
+    splitwave.total_participants = total_participants as u64;
+    splitwave.participants_paid_to_splitwave = 0;
+    splitwave.authority = authority.key();
+    splitwave.mint = mint.key();
+    splitwave.recipient = recipient.key();
+    splitwave.amount_disbursed_to_recipient = false;
+    splitwave.participants = participants;
+    splitwave.splitwave_token_account = splitwave_token_account.key();
+    
     Ok(())
 }

@@ -21,6 +21,7 @@ pub struct PaySplitwave<'info> {
     #[account(mut)]
     pub participant: Signer<'info>,
     /// CHECK: the participant is validated by the seeds of the splitwave account
+    #[account(address = splitwave.authority)]
     pub authority: AccountInfo<'info>,
 
     #[account(
@@ -86,6 +87,16 @@ pub fn handler<'info>(ctx: Context<PaySplitwave>, split: u64) -> Result<()> {
     let cpi_program = token_program.to_account_info();
     let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
     token::transfer(cpi_ctx, split)?;
+
+    // Update the splitwave state.
+    let splitwave = &mut ctx.accounts.splitwave;
+    splitwave.participants.iter_mut().for_each(|p| {
+        if p.split == split && p.participant == participant.key() {
+            p.paid = true;
+        }
+    });
+    splitwave.participants_paid_to_splitwave += 1;
+    splitwave.amount_paid_to_splitwave += split;
 
     Ok(())
 }

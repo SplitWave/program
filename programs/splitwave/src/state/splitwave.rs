@@ -8,6 +8,7 @@ pub const SEED_SPLITWAVE: &[u8] = b"splitwave";
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, Debug, Default)]
 pub struct PartSplit {
     pub split: u64,
+    pub paid: bool,
     pub participant: Pubkey,
 }
 
@@ -19,10 +20,14 @@ pub struct PartSplit {
 #[derive(Debug)]
 pub struct Splitwave {
     pub bump: u8,
-    pub amount: u64,
+    pub total_amount_to_recipient: u64,
+    pub amount_paid_to_splitwave: u64,
+    pub total_participants: u64,
+    pub participants_paid_to_splitwave: u64,
     pub authority: Pubkey,
     pub mint: Pubkey,
     pub recipient: Pubkey,
+    pub amount_disbursed_to_recipient: bool,
     pub participants: Vec<PartSplit>,
     pub splitwave_token_account: Pubkey,
 }
@@ -46,40 +51,5 @@ impl TryFrom<Vec<u8>> for Splitwave {
     type Error = Error;
     fn try_from(data: Vec<u8>) -> std::result::Result<Self, Self::Error> {
         Splitwave::try_deserialize(&mut data.as_slice())
-    }
-}
-
-pub trait SplitwaveAccount {
-    fn new(
-        &mut self,
-        bump: u8,
-        amount: u64,
-        authority: Pubkey,
-        mint: Pubkey,
-        recipient: Pubkey,
-        participants: Vec<PartSplit>,
-        splitwave_token_account: Pubkey,
-    ) -> Result<()>;
-}
-
-impl SplitwaveAccount for Account<'_, Splitwave> {
-    fn new(
-        &mut self,
-        bump: u8,
-        amount: u64,
-        authority: Pubkey,
-        mint: Pubkey,
-        recipient: Pubkey,
-        participants: Vec<PartSplit>,
-        splitwave_token_account: Pubkey,
-    ) -> Result<()> {
-        self.bump = bump;
-        self.amount = amount;
-        self.authority = authority;
-        self.mint = mint;
-        self.recipient = recipient;
-        self.participants = participants;
-        self.splitwave_token_account = splitwave_token_account;
-        Ok(())
     }
 }

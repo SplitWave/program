@@ -16,8 +16,8 @@ pub mod splitwave {
     /*
      * Create Splitwave Approval
      */
-    pub fn create_splitwave(ctx: Context<CreateSplitwave>, amount: u64, participants: Vec<PartSplit>) -> Result<()> {
-        create_splitwave::handler(ctx, amount, participants)
+    pub fn create_splitwave(ctx: Context<CreateSplitwave>, total_amount_to_recipient: u64, participants: Vec<PartSplit>) -> Result<()> {
+        create_splitwave::handler(ctx, total_amount_to_recipient, participants)
     }
 
     /*
@@ -29,10 +29,10 @@ pub mod splitwave {
     }
 
     /*
-     * update disbursement amount
+     * update disbursement total_amount_to_recipient
      */
-    pub fn update_splitwave(ctx: Context<UpdateSplitwave>, amount: Option<u64>, participants: Option<Vec<PartSplit>> ) -> Result<()> {
-        update_splitwave::handler(ctx, amount, participants)
+    pub fn update_splitwave(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: Option<u64>, participants: Vec<PartSplit> ) -> Result<()> {
+        update_splitwave::handler(ctx, total_amount_to_recipient, participants)
     }
 
     pub fn pay_splitwave(ctx:Context<PaySplitwave>, split: u64 ) -> Result<()> {
