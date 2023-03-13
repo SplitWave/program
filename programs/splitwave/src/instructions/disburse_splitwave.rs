@@ -7,33 +7,24 @@ use {
         associated_token::AssociatedToken,
         token::{self, Mint, TokenAccount, Transfer}
     },
-    clockwork_sdk::{
-        state::{Thread, ThreadAccount, ThreadResponse},
-    },
+    // clockwork_sdk::{
+    //     state::{Thread, ThreadAccount, ThreadResponse},
+    // },
 };
 
 #[derive(Accounts)]
 pub struct DisburseSplitwave<'info> {
-    #[account(address = anchor_spl::associated_token::ID)]
-    pub associated_token_program: Program<'info, AssociatedToken>,
-
     /// CHECK: The authority is validated by the splitwave account
     #[account(address = splitwave.authority)]
     pub authority: AccountInfo<'info>,
-
-    #[account(
-        mut, 
-        associated_token::authority = splitwave,
-        associated_token::mint = mint,
-    )]
-    pub splitwave_token_account: Account<'info, TokenAccount>,
-
+    
     #[account(address = splitwave.mint)]
     pub mint: Box<Account<'info, Mint>>,
     
-    #[account(mut)]
-    pub payer: Signer<'info>,
-
+    /// CHECK: The recipient is validated by the splitwave account
+    #[account(address = splitwave.recipient)]
+    pub recipient: AccountInfo<'info>,
+    
     #[account(
         mut, 
         seeds = [
@@ -51,21 +42,27 @@ pub struct DisburseSplitwave<'info> {
     pub splitwave: Account<'info, Splitwave>,
     
     #[account(
-        signer, 
-        address = thread.pubkey(),
-        constraint = thread.authority.eq(&splitwave.authority),
+        mut, 
+        token::authority = splitwave,
+        token::mint = mint,
     )]
-    pub thread: Box<Account<'info, Thread>>,
+    pub splitwave_token_account: Account<'info, TokenAccount>,
 
-    /// CHECK: The recipient is validated by the splitwave account
-    #[account(address = splitwave.recipient)]
-    pub recipient: AccountInfo<'info>,
+    // #[account(
+    //     signer, 
+    //     address = thread.pubkey(),
+    //     constraint = thread.authority.eq(&splitwave.authority),
+    // )]
+    // pub thread: Box<Account<'info, Thread>>,
+
+    #[account(mut)]
+    pub payer: Signer<'info>,
 
     #[account( 
         init_if_needed,
         payer = payer,
-        associated_token::authority = recipient,
-        associated_token::mint = mint,
+        token::authority = recipient,
+        token::mint = mint,
     )]
     pub recipient_token_account: Box<Account<'info, TokenAccount>>,
 
@@ -77,9 +74,13 @@ pub struct DisburseSplitwave<'info> {
 
     #[account(address = anchor_spl::token::ID)]
     pub token_program: Program<'info, anchor_spl::token::Token>,
+
+    #[account(address = anchor_spl::associated_token::ID)]
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
-pub fn handler(ctx: Context<DisburseSplitwave>) -> Result<ThreadResponse> {
+// pub fn handler(ctx: Context<DisburseSplitwave>) -> Result<ThreadResponse> {
+pub fn handler(ctx: Context<DisburseSplitwave>) -> Result<()> {
     // Get accounts.
     let splitwave_token_account = &mut ctx.accounts.splitwave_token_account;
     let splitwave = &mut ctx.accounts.splitwave;
@@ -130,6 +131,6 @@ pub fn handler(ctx: Context<DisburseSplitwave>) -> Result<ThreadResponse> {
 
     // Update splitwave state.
     splitwave.amount_disbursed_to_recipient = true;
-
-    Ok(ThreadResponse::default())
+    Ok(())
+    // Ok(ThreadResponse::default())
 }

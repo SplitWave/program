@@ -1,3 +1,5 @@
+use anchor_spl::token::Mint;
+
 use crate::errors::SplitwaveError;
 
 use {crate::state::*, anchor_lang::prelude::*};
@@ -5,8 +7,15 @@ use {crate::state::*, anchor_lang::prelude::*};
 #[derive(Accounts)]
 #[instruction(total_amount_to_recipient: Option<u64>)]
 pub struct UpdateSplitwave<'info> {
-    #[account(mut)]
+    #[account(mut, address = splitwave.authority)]
     pub authority: Signer<'info>,
+
+    #[account(address = splitwave.mint)]
+    pub mint: Account<'info, Mint>,
+    
+    /// CHECK: the recipient is validated by the seeds of the splitwave account
+    #[account(address = splitwave.recipient)]
+    pub recipient: AccountInfo<'info>,
 
     #[account(
         mut,

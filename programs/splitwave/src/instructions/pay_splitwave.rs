@@ -15,24 +15,16 @@ use {
 #[derive(Accounts)]
 #[instruction(split: u64)]
 pub struct PaySplitwave<'info> {
-    #[account(address = anchor_spl::associated_token::ID)]
-    pub associated_token_program: Program<'info, AssociatedToken>,
-
-    #[account(mut)]
-    pub participant: Signer<'info>,
     /// CHECK: the participant is validated by the seeds of the splitwave account
     #[account(address = splitwave.authority)]
     pub authority: AccountInfo<'info>,
 
-    #[account(
-        mut, 
-        associated_token::authority = participant,
-        associated_token::mint = mint,
-    )]
-    pub participant_token_account: Account<'info, TokenAccount>,
-
-    #[account()]
+    #[account(address = splitwave.mint)]
     pub mint: Account<'info, Mint>,
+
+    /// CHECK: the recipient is validated by the seeds of the splitwave account
+    #[account(address = splitwave.recipient)]
+    pub recipient: AccountInfo<'info>,
 
     #[account(
         mut, 
@@ -50,16 +42,24 @@ pub struct PaySplitwave<'info> {
         constraint = splitwave.participants.iter().any(|p| p.split == split && p.participant == participant.key())
     )]
     pub splitwave: Account<'info, Splitwave>,
+
     #[account(
         mut, 
-        associated_token::authority = splitwave,
-        associated_token::mint = mint,
+        token::authority = splitwave,
+        token::mint = mint,
     )]
     pub splitwave_token_account: Account<'info, TokenAccount>,
 
-    /// CHECK: the recipient is validated by the seeds of the splitwave account
-    #[account()]
-    pub recipient: AccountInfo<'info>,
+    
+    #[account(mut)]
+    pub participant: Signer<'info>,
+    
+    #[account(
+        mut, 
+        token::authority = participant,
+        token::mint = mint,
+    )]
+    pub participant_token_account: Account<'info, TokenAccount>,
 
     #[account(address = sysvar::rent::ID)]
     pub rent: Sysvar<'info, Rent>,
@@ -69,6 +69,9 @@ pub struct PaySplitwave<'info> {
 
     #[account(address = anchor_spl::token::ID)]
     pub token_program: Program<'info, token::Token>,
+
+    #[account(address = anchor_spl::associated_token::ID)]
+    pub associated_token_program: Program<'info, AssociatedToken>,
 }
 
 pub fn handler<'info>(ctx: Context<PaySplitwave>, split: u64) -> Result<()> {

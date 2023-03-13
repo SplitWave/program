@@ -15,14 +15,15 @@ use {
 #[derive(Accounts)]
 #[instruction(total_amount_to_recipient: u64)]
 pub struct CreateSplitwave<'info> {
-    #[account(address = anchor_spl::associated_token::ID)]
-    pub associated_token_program: Program<'info, AssociatedToken>,
-
     #[account(mut)]
     pub authority: Signer<'info>,
 
     #[account()]
     pub mint: Account<'info, Mint>,
+
+    /// CHECK: the recipient is validated by the seeds of the splitwave account
+    #[account()]
+    pub recipient: AccountInfo<'info>,
 
     #[account(
         init,
@@ -39,15 +40,11 @@ pub struct CreateSplitwave<'info> {
     pub splitwave: Account<'info, Splitwave>,
     #[account(
         init_if_needed,
-        associated_token::authority = splitwave,
-        associated_token::mint = mint,
+        token::authority = splitwave,
+        token::mint = mint,
         payer = authority,
     )]
     pub splitwave_token_account: Account<'info, TokenAccount>,
-
-    /// CHECK: the recipient is validated by the seeds of the splitwave account
-    #[account()]
-    pub recipient: AccountInfo<'info>,
 
     #[account(address = sysvar::rent::ID)]
     pub rent: Sysvar<'info, Rent>,
@@ -57,14 +54,18 @@ pub struct CreateSplitwave<'info> {
 
     #[account(address = anchor_spl::token::ID)]
     pub token_program: Program<'info, token::Token>,
+
+    #[account(address = anchor_spl::associated_token::ID)]
+    pub associated_token_program: Program<'info, AssociatedToken>,
+
 }
 
 pub fn handler<'info>(ctx: Context<CreateSplitwave>, total_amount_to_recipient: u64, participants: Vec<PartSplit>) -> Result<()> {
     // Get accounts.
     let authority = &ctx.accounts.authority;
     let mint = &ctx.accounts.mint;
-    let splitwave = &mut ctx.accounts.splitwave;
     let recipient = &ctx.accounts.recipient;
+    let splitwave = &mut ctx.accounts.splitwave;
     let splitwave_token_account = &mut ctx.accounts.splitwave_token_account;
 
     if total_amount_to_recipient == 0 {

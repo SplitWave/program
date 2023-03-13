@@ -35,11 +35,12 @@ describe("splitwave", () => {
         ),
       },
     ];
+    export type ArgsTuple<[{ name: "totalAmountToRecipient"; type: "u64"; }, { name: "participants"; type: { vec: { defined: "PartSplit"; }; }; }]>
+    export type PartSplit  = { name: "split"; type: "u64"; } | { name: "paid"; type: "bool"; } | { name: "participant"; type: "Pubkey"; }
     const tx = await program.methods
-      .createSplitwave({
-        totalAmountToRecipient: new BN(100),
-        participants: participants,
-      })
+      .createSplitwave(
+        
+      )
       .rpc();
     console.log("Your transaction signature", tx);
   });
