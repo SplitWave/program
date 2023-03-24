@@ -43,8 +43,8 @@ pub struct DisburseSplitwave<'info> {
     
     #[account(
         mut, 
-        token::authority = splitwave,
-        token::mint = mint,
+        associated_token::authority = splitwave,
+        associated_token::mint = mint,
     )]
     pub splitwave_token_account: Account<'info, TokenAccount>,
 
@@ -61,8 +61,8 @@ pub struct DisburseSplitwave<'info> {
     #[account( 
         init_if_needed,
         payer = payer,
-        token::authority = recipient,
-        token::mint = mint,
+        associated_token::authority = recipient,
+        associated_token::mint = mint,
     )]
     pub recipient_token_account: Box<Account<'info, TokenAccount>>,
 
@@ -109,8 +109,26 @@ pub fn handler(ctx: Context<DisburseSplitwave>) -> Result<()> {
         return err!(SplitwaveError::SplitwaveNotFullyPaid);
     }
 
+    
     // Transfer tokens from splitwav's ATA to recipient's ATA.
-    let bump = splitwave.bump;
+    
+    let splitwave_seeds = &[
+        SEED_SPLITWAVE, 
+        splitwave.authority.as_ref(),
+        splitwave.mint.as_ref(),  
+        splitwave.recipient.as_ref(),
+        &[splitwave.bump]
+    ];
+    
+    let splitwave_signer = &[&splitwave_seeds[..]];
+    let cpi_accounts = Transfer {
+        from: splitwave_token_account.to_account_info(),
+        to: recipient_token_account.to_account_info(),
+        authority: splitwave.to_account_info(),
+    };
+    let cpi_program = token_program.to_account_info();
+    let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts).with_signer(splitwave_signer);
+    token::transfer(cpi_ctx, splitwave.total_amount_to_recipient)?;
     token::transfer(
         CpiContext::new_with_signer(
             token_program.to_account_info(), 
@@ -119,13 +137,8 @@ pub fn handler(ctx: Context<DisburseSplitwave>) -> Result<()> {
                 to: recipient_token_account.to_account_info(),
                 authority: splitwave.to_account_info(),
             },             
-            &[&[
-                SEED_SPLITWAVE, 
-                splitwave.authority.as_ref(),
-                splitwave.mint.as_ref(),  
-                splitwave.recipient.as_ref(),
-                &[bump]]
-            ]),
+            splitwave_signer
+        ),
         splitwave.total_amount_to_recipient,
     )?;
 

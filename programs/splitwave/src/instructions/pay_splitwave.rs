@@ -26,38 +26,32 @@ pub struct PaySplitwave<'info> {
     #[account(address = splitwave.recipient)]
     pub recipient: AccountInfo<'info>,
 
-    #[account(
-        mut, 
-        seeds = [
-            SEED_SPLITWAVE, 
-            authority.key().as_ref(), 
-            mint.key().as_ref(),
-            recipient.key().as_ref(), 
-        ],
-        bump = splitwave.bump,
-        has_one = mint,
-        has_one = recipient,
-        has_one = splitwave_token_account,
-        has_one = authority,
-        constraint = splitwave.participants.iter().any(|p| p.split == split && p.participant == participant.key())
+    #[account( 
+        init_if_needed,
+        payer = participant,
+        associated_token::authority = recipient,
+        associated_token::mint = mint,
     )]
+    pub recipient_token_account: Box<Account<'info, TokenAccount>>,
+
+    #[account(mut)]
     pub splitwave: Account<'info, Splitwave>,
 
     #[account(
-        mut, 
-        token::authority = splitwave,
-        token::mint = mint,
+        init_if_needed,
+        payer = participant,
+        associated_token::authority = splitwave,
+        associated_token::mint = mint,
     )]
-    pub splitwave_token_account: Account<'info, TokenAccount>,
+   pub splitwave_token_account: Account<'info, TokenAccount>,
 
-    
     #[account(mut)]
     pub participant: Signer<'info>,
     
     #[account(
         mut, 
-        token::authority = participant,
-        token::mint = mint,
+        associated_token::authority = participant,
+        associated_token::mint = mint,
     )]
     pub participant_token_account: Account<'info, TokenAccount>,
 
@@ -80,6 +74,7 @@ pub fn handler<'info>(ctx: Context<PaySplitwave>, split: u64) -> Result<()> {
     let participant_token_account = &mut ctx.accounts.participant_token_account;
     let token_program = &ctx.accounts.token_program;
     let splitwave_token_account = &mut ctx.accounts.splitwave_token_account;
+    let recipient_token_account = &mut ctx.accounts.recipient_token_account;
 
     // Transfer the tokens to the splitwave account.
     let cpi_accounts = Transfer {
@@ -98,8 +93,31 @@ pub fn handler<'info>(ctx: Context<PaySplitwave>, split: u64) -> Result<()> {
             p.paid = true;
         }
     });
+    splitwave.splitwave_token_account = splitwave_token_account.key();
     splitwave.participants_paid_to_splitwave += 1;
     splitwave.amount_paid_to_splitwave += split;
+
+    // disburse the splitwave if all participants have paid
+    if splitwave.participants_paid_to_splitwave as usize == splitwave.participants.len() {
+        // Transfer the tokens to the recipient.
+        let splitwave_seeds = &[
+            SEED_SPLITWAVE, 
+            splitwave.authority.as_ref(),
+            splitwave.mint.as_ref(),  
+            splitwave.recipient.as_ref(),
+            &[splitwave.bump]
+        ];
+        
+        let splitwave_signer = &[&splitwave_seeds[..]];
+        let cpi_accounts = Transfer {
+            from: splitwave_token_account.to_account_info(),
+            to: recipient_token_account.to_account_info(),
+            authority: splitwave.to_account_info(),
+        };
+        let cpi_program = token_program.to_account_info();
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts).with_signer(splitwave_signer);
+        token::transfer(cpi_ctx, splitwave.total_amount_to_recipient)?;
+    }
 
     Ok(())
 }

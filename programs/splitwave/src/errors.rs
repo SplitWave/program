@@ -14,4 +14,6 @@ pub enum SplitwaveError {
     SplitwaveAlreadyDisbursed,
     #[msg("Splitwave token account is not fully paid")]
     SplitwaveNotFullyPaid,
+    #[msg("Deserialization error")]
+    DeserializationError,
 }

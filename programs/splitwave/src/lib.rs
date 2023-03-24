@@ -14,10 +14,18 @@ pub mod splitwave {
     use super::*;
 
     /*
+     * Create Splitwave Id
+     */
+    pub fn create_splitwave_id(ctx: Context<CreateSplitwaveId>) -> Result<()> {
+        create_splitwave_id::handler(ctx)
+    }
+
+    /*
      * Create Splitwave  
      */
     pub fn create_splitwave(ctx: Context<CreateSplitwave>, total_amount_to_recipient: u64, participants: Vec<PartSplit>) -> Result<()> {
         create_splitwave::handler(ctx, total_amount_to_recipient, participants)
+        // create_splitwave::handler(ctx, total_amount_to_recipient)
     }
 
     /*

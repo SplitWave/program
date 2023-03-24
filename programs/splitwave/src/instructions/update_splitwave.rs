@@ -17,18 +17,9 @@ pub struct UpdateSplitwave<'info> {
     #[account(address = splitwave.recipient)]
     pub recipient: AccountInfo<'info>,
 
-    #[account(
-        mut,
-        seeds = [
-            SEED_SPLITWAVE,
-            splitwave.authority.key().as_ref(),
-            splitwave.mint.key().as_ref(),
-            splitwave.recipient.key().as_ref(),
-        ],
-        bump,
-        has_one = authority,
-    )]
+    #[account(mut)]
     pub splitwave: Account<'info, Splitwave>,
+
 }
 
 pub fn handler<'info>(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: Option<u64>, participants: Vec<PartSplit>) -> Result<()> {

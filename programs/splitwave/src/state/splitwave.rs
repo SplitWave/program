@@ -1,3 +1,5 @@
+use crate::errors::SplitwaveError;
+
 use {
     anchor_lang::{prelude::*, AnchorDeserialize},
     std::convert::TryFrom,
@@ -5,41 +7,44 @@ use {
 
 pub const SEED_SPLITWAVE: &[u8] = b"splitwave";
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, Debug, Default)]
+/// A structure representing a participant's split and payment status.
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub struct PartSplit {
     pub split: u64,
     pub paid: bool,
     pub participant: Pubkey,
 }
 
-/**
- * Splitwave
- */
-
+/// Represents the state of a splitwave.
 #[account]
-#[derive(Debug)]
+#[derive(Debug, Default, PartialEq, Eq)]
 pub struct Splitwave {
-    pub bump: u8,
-    pub total_amount_to_recipient: u64,
-    pub amount_paid_to_splitwave: u64,
-    pub total_participants: u64,
-    pub participants_paid_to_splitwave: u64,
-    pub authority: Pubkey,
-    pub mint: Pubkey,
-    pub recipient: Pubkey,
-    pub amount_disbursed_to_recipient: bool,
-    pub participants: Vec<PartSplit>,
-    pub splitwave_token_account: Pubkey,
+    pub bump: u8, //1
+    pub splitwave_id: u64, //8
+    pub total_amount_to_recipient: u64, //8
+    pub amount_paid_to_splitwave: u64, //8
+    pub total_participants: u64, //8
+    pub participants_paid_to_splitwave: u64, //8
+    pub authority: Pubkey, //32
+    pub mint: Pubkey, //32
+    pub recipient: Pubkey, //32
+    pub amount_disbursed_to_recipient: bool, //1
+    pub splitwave_token_account: Pubkey, //32
+    pub participants: Vec<PartSplit>, //4
+    // pub splitwave_id: String, //24
 }
 
+pub const SIZE_OF_SPLITWAVE: usize = 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32 + 32 + 1 + 32 + 4;
+// pub const SIZE_OF_SPLITWAVE: usize = 1 + 8 + 8 + 8 + 8 + 32 + 32 + 32 + 1 + 32 + 4 + 24;
+pub const SIZE_OF_PARTSPLIT: usize = 8 + 1 + 32;
+
 impl Splitwave {
-    pub fn pubkey(authority: Pubkey, mint: Pubkey, recipient: Pubkey) -> Pubkey {
+    /// Calculates the Splitwave's pubkey based on authority, mint, and recipient.
+    pub fn pubkey(&mut self) -> Pubkey {
         Pubkey::find_program_address(
             &[
                 SEED_SPLITWAVE,
-                authority.as_ref(),
-                mint.as_ref(),
-                recipient.as_ref(),
+                self.splitwave_id.to_le_bytes().as_ref(),
             ],
             &crate::ID,
         )
@@ -47,9 +52,12 @@ impl Splitwave {
     }
 }
 
+
 impl TryFrom<Vec<u8>> for Splitwave {
-    type Error = Error;
+    type Error = SplitwaveError;
+
+    /// Tries to create a Splitwave instance from a Vec<u8>.
     fn try_from(data: Vec<u8>) -> std::result::Result<Self, Self::Error> {
-        Splitwave::try_deserialize(&mut data.as_slice())
+        Splitwave::try_deserialize(&mut data.as_slice()).map_err(|_| SplitwaveError::DeserializationError)
     }
 }
