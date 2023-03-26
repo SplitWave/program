@@ -9,10 +9,10 @@ pub const SEED_SPLITWAVE: &[u8] = b"splitwave";
 
 /// A structure representing a participant's split and payment status.
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Debug, Default)]
-pub struct PartSplit {
-    pub split: u64,
-    pub paid: bool,
-    pub participant: Pubkey,
+pub struct SplitParticipant {
+    pub paid: bool, //1
+    pub participant_split_amount: u64, //8
+    pub participant: Pubkey, //32
 }
 
 /// Represents the state of a splitwave.
@@ -20,23 +20,21 @@ pub struct PartSplit {
 #[derive(Debug, Default, PartialEq, Eq)]
 pub struct Splitwave {
     pub bump: u8, //1
+    pub splitwave_disbursed: bool, //1
     pub splitwave_id: u64, //8
     pub total_amount_to_recipient: u64, //8
-    pub amount_paid_to_splitwave: u64, //8
+    pub amount_paid_to_splitwave_account: u64, //8
     pub total_participants: u64, //8
     pub participants_paid_to_splitwave: u64, //8
     pub authority: Pubkey, //32
-    pub mint: Pubkey, //32
     pub recipient: Pubkey, //32
-    pub amount_disbursed_to_recipient: bool, //1
-    pub splitwave_token_account: Pubkey, //32
-    pub participants: Vec<PartSplit>, //4
-    // pub splitwave_id: String, //24
+    pub splitwave_mint: Option<Pubkey>, //32
+    pub splitwave_token_account: Option<Pubkey>, //32
+    pub participants: Vec<SplitParticipant>, //4
 }
 
-pub const SIZE_OF_SPLITWAVE: usize = 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32 + 32 + 1 + 32 + 4;
-// pub const SIZE_OF_SPLITWAVE: usize = 1 + 8 + 8 + 8 + 8 + 32 + 32 + 32 + 1 + 32 + 4 + 24;
-pub const SIZE_OF_PARTSPLIT: usize = 8 + 1 + 32;
+pub const SIZE_OF_SPLITWAVE: usize = 1 + 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32 + (1 + 32) + (1 + 32) + 4;
+pub const SIZE_OF_PARTSPLIT: usize = 1 + 8 + 32;
 
 impl Splitwave {
     /// Calculates the Splitwave's pubkey based on authority, mint, and recipient.

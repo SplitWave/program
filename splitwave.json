@@ -47,6 +47,11 @@
           "isSigner": false
         },
         {
+          "name": "splitwaveTokenAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
           "name": "splitwaveId",
           "isMut": true,
           "isSigner": false
@@ -81,7 +86,7 @@
           "name": "participants",
           "type": {
             "vec": {
-              "defined": "PartSplit"
+              "defined": "SplitParticipant"
             }
           }
         }
@@ -153,7 +158,7 @@
       ],
       "args": [
         {
-          "name": "split",
+          "name": "participant_split_amount",
           "type": "u64"
         }
       ]
@@ -254,7 +259,7 @@
           "name": "participants",
           "type": {
             "vec": {
-              "defined": "PartSplit"
+              "defined": "SplitParticipant"
             }
           }
         }
@@ -264,9 +269,7 @@
   "accounts": [
     {
       "name": "SplitwaveId",
-      "docs": [
-        "Represents the state of a splitwave."
-      ],
+      "docs": ["Represents the state of a splitwave."],
       "type": {
         "kind": "struct",
         "fields": [
@@ -283,9 +286,7 @@
     },
     {
       "name": "Splitwave",
-      "docs": [
-        "Represents the state of a splitwave."
-      ],
+      "docs": ["Represents the state of a splitwave."],
       "type": {
         "kind": "struct",
         "fields": [
@@ -337,7 +338,7 @@
             "name": "participants",
             "type": {
               "vec": {
-                "defined": "PartSplit"
+                "defined": "SplitParticipant"
               }
             }
           }
@@ -347,7 +348,7 @@
   ],
   "types": [
     {
-      "name": "PartSplit",
+      "name": "SplitParticipant",
       "docs": [
         "A structure representing a participant's split and payment status."
       ],
@@ -355,7 +356,7 @@
         "kind": "struct",
         "fields": [
           {
-            "name": "split",
+            "name": "participant_split_amount",
             "type": "u64"
           },
           {
@@ -405,9 +406,14 @@
       "code": 6006,
       "name": "DeserializationError",
       "msg": "Deserialization error"
+    },
+    {
+      "code": 6007,
+      "name": "AssociatedTokenAccountMismatch",
+      "msg": "Associated token account mismatch"
     }
   ],
   "metadata": {
-    "address": "SpWwab5CWBLYHfXfnfRqobDq7122etY6V35ed6ZTw9J"
+    "address": "Ss1SrC5qqtaXZMdER55Qgj2ZS8T4NmkwjRC5BYnHopr"
   }
 }

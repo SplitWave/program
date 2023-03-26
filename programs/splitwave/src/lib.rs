@@ -5,7 +5,7 @@ pub mod errors;
 pub mod instructions;
 
 pub use id::ID;
-pub use state::PartSplit;
+pub use state::SplitParticipant;
 pub use anchor_lang::prelude::*;
 pub use instructions::*;
 
@@ -23,7 +23,7 @@ pub mod splitwave {
     /*
      * Create Splitwave  
      */
-    pub fn create_splitwave(ctx: Context<CreateSplitwave>, total_amount_to_recipient: u64, participants: Vec<PartSplit>) -> Result<()> {
+    pub fn create_splitwave<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, CreateSplitwave<'info>>, total_amount_to_recipient: u64, participants: Vec<SplitParticipant>) -> Result<()> {
         create_splitwave::handler(ctx, total_amount_to_recipient, participants)
         // create_splitwave::handler(ctx, total_amount_to_recipient)
     }
@@ -31,23 +31,23 @@ pub mod splitwave {
     /*
      * Pay Splitwave
      */
-    pub fn pay_splitwave(ctx:Context<PaySplitwave>, split: u64 ) -> Result<()> {
-        pay_splitwave::handler(ctx, split)
+    pub fn pay_splitwave<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, PaySplitwave<'info>>, participant_split_amount: u64 ) -> Result<()> {
+        pay_splitwave::handler(ctx, participant_split_amount)
     }
 
     /*
      * disburse splitwave from program authority's ATA to recipient's ATA
      */
-    pub fn disburse_splitwave(ctx: Context<DisburseSplitwave>) ->
-    // Result<clockwork_sdk::state::ThreadResponse> {
-    Result<()> {
-        disburse_splitwave::handler(ctx)
-    }
+    // pub fn disburse_splitwave(ctx: Context<DisburseSplitwave>) ->
+    // // Result<clockwork_sdk::state::ThreadResponse> {
+    // Result<()> {
+    //     disburse_splitwave::handler(ctx)
+    // }
 
     /*
      * update splitwave     
      */
-    pub fn update_splitwave(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: Option<u64>, participants: Vec<PartSplit> ) -> Result<()> {
+    pub fn update_splitwave(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: Option<u64>, participants: Vec<SplitParticipant> ) -> Result<()> {
         update_splitwave::handler(ctx, total_amount_to_recipient, participants)
     }
 

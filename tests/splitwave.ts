@@ -20,7 +20,7 @@ import {
 import { IDL, Splitwave } from "../target/types/splitwave";
 
 const SPLITWAVE_PROGRAM_ID = new PublicKey(
-  "SpWwab5CWBLYHfXfnfRqobDq7122etY6V35ed6ZTw9J"
+  "Ss1SrC5qqtaXZMdER55Qgj2ZS8T4NmkwjRC5BYnHopr"
 );
 
 const NATIVE_SOL_MINT = new PublicKey(
@@ -107,17 +107,17 @@ describe("splitwave", async () => {
 
     const participants = [
       {
-        split: new BN(2),
+        participant_split_amount: new BN(2),
         paid: false,
         participant: ZzZ2KP.publicKey,
       },
       {
-        split: new BN(5),
+        participant_split_amount: new BN(5),
         paid: false,
         participant: zzz3KP.publicKey,
       },
       {
-        split: new BN(3),
+        participant_split_amount: new BN(3),
         paid: false,
         participant: Zzz4KP.publicKey,
       },
