@@ -1,6 +1,7 @@
 pub mod id;
 pub mod state;
 pub mod errors;
+pub mod utils;
 
 pub mod instructions;
 
@@ -23,15 +24,21 @@ pub mod splitwave {
     /*
      * Create Splitwave  
      */
-    pub fn create_splitwave<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, CreateSplitwave<'info>>, total_amount_to_recipient: u64, participants: Vec<SplitParticipant>) -> Result<()> {
-        create_splitwave::handler(ctx, total_amount_to_recipient, participants)
+    pub fn create_splitwave
+        (
+            ctx: Context<CreateSplitwave>, 
+            total_amount_to_recipient: u64, 
+            participants: Vec<SplitParticipant>, 
+            splitwave_treasury_bump: u8,
+        ) -> Result<()> {
+        create_splitwave::handler(ctx, total_amount_to_recipient, participants, splitwave_treasury_bump)
         // create_splitwave::handler(ctx, total_amount_to_recipient)
     }
 
     /*
      * Pay Splitwave
      */
-    pub fn pay_splitwave<'key, 'accounts, 'remaining, 'info>(ctx: Context<'key, 'accounts, 'remaining, 'info, PaySplitwave<'info>>, participant_split_amount: u64 ) -> Result<()> {
+    pub fn pay_splitwave(ctx: Context<PaySplitwave>, participant_split_amount: u64 ) -> Result<()> {
         pay_splitwave::handler(ctx, participant_split_amount)
     }
 

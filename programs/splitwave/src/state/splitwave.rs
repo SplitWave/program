@@ -1,3 +1,5 @@
+use shank::ShankAccount;
+
 use crate::errors::SplitwaveError;
 
 use {
@@ -6,18 +8,19 @@ use {
 };
 
 pub const SEED_SPLITWAVE: &[u8] = b"splitwave";
+pub const SEED_SPLITWAVE_TREASURY: &[u8] = b"splitwave-treasury";
 
 /// A structure representing a participant's split and payment status.
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Debug, Default)]
 pub struct SplitParticipant {
     pub paid: bool, //1
     pub participant_split_amount: u64, //8
-    pub participant: Pubkey, //32
+    pub participant_token_account: Pubkey, //32
 }
 
 /// Represents the state of a splitwave.
 #[account]
-#[derive(Debug, Default, PartialEq, Eq)]
+#[derive(Debug, Default, PartialEq, Eq, ShankAccount)]
 pub struct Splitwave {
     pub bump: u8, //1
     pub splitwave_disbursed: bool, //1
@@ -27,13 +30,14 @@ pub struct Splitwave {
     pub total_participants: u64, //8
     pub participants_paid_to_splitwave: u64, //8
     pub authority: Pubkey, //32
-    pub recipient: Pubkey, //32
-    pub splitwave_mint: Option<Pubkey>, //32
-    pub splitwave_token_account: Option<Pubkey>, //32
+    pub recipient_token_account: Pubkey, //32
+    pub splitwave_mint: Pubkey, //32
+    pub splitwave_treasury: Pubkey, //32
+    pub splitwave_treasury_bump: u8, //1
     pub participants: Vec<SplitParticipant>, //4
 }
 
-pub const SIZE_OF_SPLITWAVE: usize = 1 + 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32 + (1 + 32) + (1 + 32) + 4;
+pub const SIZE_OF_SPLITWAVE: usize = 1 + 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32  + 32 + 32 + 1 + 4;
 pub const SIZE_OF_PARTSPLIT: usize = 1 + 8 + 32;
 
 impl Splitwave {

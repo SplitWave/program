@@ -60,4 +60,26 @@ pub enum SplitwaveError {
     DuplicateParticipants,
     #[msg("Invalid Accounts")]
     InvalidAccounts,
+    #[msg("Participant not found")]
+    ParticipantNotFound,
+    #[msg("Participant already paid")]
+    ParticipantAlreadyPaid,
+    #[msg("Participant paid incorrect amount")]
+    ParticipantPaidIncorrectAmount,
+    #[msg("Invalid Token Account Owner")]
+    InvalidTokenAccountOwner,
+    #[msg("Token transfer failed")]
+    TokenTransferFailed,
+    #[msg("Public key mismatch")]
+    PublicKeyMismatch,
+    #[msg("Uninitialized account")]
+    UninitializedAccount,
+    #[msg("Invalid account owner")]
+    IncorrectOwner,
+    #[msg("Derived Key is not a signer")]
+    DerivedKeyInvalid,
+    #[msg("Invalid bump seed")]
+    BumpSeedNotInHashMap,
+    #[msg("Invalid Associated Token Account")]
+    InvalidAssociatedTokenAccount,
 }

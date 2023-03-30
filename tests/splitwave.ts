@@ -20,7 +20,7 @@ import {
 import { IDL, Splitwave } from "../target/types/splitwave";
 
 const SPLITWAVE_PROGRAM_ID = new PublicKey(
-  "Ss1SrC5qqtaXZMdER55Qgj2ZS8T4NmkwjRC5BYnHopr"
+  "pp1aQnBZ8271r5LcZymbudhTXbExDQiH2CzDj3N6ujY"
 );
 
 const NATIVE_SOL_MINT = new PublicKey(

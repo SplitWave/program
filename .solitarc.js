@@ -7,7 +7,7 @@ const binaryInstallDir = path.join(__dirname, ".crates");
 module.exports = {
   idlGenerator: "anchor",
   programName: "splitwave",
-  programId: "Ss1SrC5qqtaXZMdER55Qgj2ZS8T4NmkwjRC5BYnHopr",
+  programId: "pp1aQnBZ8271r5LcZymbudhTXbExDQiH2CzDj3N6ujY",
   idlDir,
   sdkDir,
   binaryInstallDir,

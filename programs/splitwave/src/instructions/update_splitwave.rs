@@ -13,10 +13,6 @@ pub struct UpdateSplitwave<'info> {
     #[account(address = splitwave.authority)]
     pub authority: Signer<'info>,
 
-    /// CHECK: the recipient is validated by the seeds of the splitwave account
-    #[account(address = splitwave.recipient)]
-    pub recipient: AccountInfo<'info>,
-
     #[account(mut,
         seeds = [
             SEED_SPLITWAVE, 
@@ -49,7 +45,7 @@ pub fn handler<'info>(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: 
     // check if authority is one of the participants and see if he has paid
     let mut authority_paid = false;
     for part_split in participants.iter() {
-        if part_split.participant == *ctx.accounts.authority.key {
+        if part_split.participant_token_account == *ctx.accounts.authority.key {
             authority_paid = part_split.paid;
         }
     }
@@ -66,14 +62,14 @@ pub fn handler<'info>(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: 
     }
     
     let mut participants = participants;
-    let unique_participants: HashSet<&Pubkey> = participants.iter().map(|part_split| &part_split.participant).collect();
+    let unique_participants: HashSet<&Pubkey> = participants.iter().map(|part_split| &part_split.participant_token_account).collect();
     if unique_participants.len() != participants.len() {
         return Err(SplitwaveError::DuplicateParticipants.into());
     }
 
     participants.iter_mut().for_each(|participant| participant.paid = false);
-    participants.sort_by_key(|part_split| part_split.participant);
-    participants.dedup_by_key(|part_split| part_split.participant);
+    participants.sort_by_key(|part_split| part_split.participant_token_account);
+    participants.dedup_by_key(|part_split| part_split.participant_token_account);
     let total_participants = participants.len();
     if total_participants  == 0 {
         return err!(SplitwaveError::EmptyParticipants);
