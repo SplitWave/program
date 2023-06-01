@@ -4,7 +4,7 @@
     "description": "Splitwave JavaScript API.",
     "main": "dist/src/generated/index.js",
     "types": "dist/src/generated/index.d.ts",
-    "license": "Apache-2.0",
+    "license": "MIT",
     "scripts": {
       "gen": "yarn solita",
       "build": "yarn rimraf dist && tsc -p tsconfig.json"
