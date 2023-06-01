@@ -1,0 +1,40 @@
+{
+    "name": "@splitwave/js",
+    "version": "0.1.0",
+    "description": "Splitwave JavaScript API.",
+    "main": "dist/src/generated/index.js",
+    "types": "dist/src/generated/index.d.ts",
+    "license": "Apache-2.0",
+    "scripts": {
+      "gen": "yarn solita",
+      "build": "yarn rimraf dist && tsc -p tsconfig.json"
+    },
+    "files": [
+      "/dist"
+    ],
+    "keywords": [
+      "splitwave",
+      "nft",
+      "solana",
+      "marketplace",
+      "blockchain"
+    ],
+    "publishConfig": {
+      "access": "public",
+      "registry": "https://registry.npmjs.org"
+    },
+    "repository": "https://github.com/Splitwave/program.git",
+    "author": "Splitwave Developers <contact@splitwave.com>",
+    "dependencies": {
+      "@metaplex-foundation/beet": "^0.4.0",
+      "@metaplex-foundation/beet-solana": "^0.3.1",
+      "@solana/spl-token": "^0.3.5",
+      "@solana/web3.js": "^1.66.2"
+    },
+    "devDependencies": {
+      "@metaplex-foundation/solita": "^0.19.0",
+      "rimraf": "^3.0.2",
+      "typescript": "^4.8.4"
+    }
+  }
+  
