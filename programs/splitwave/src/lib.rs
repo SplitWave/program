@@ -2,13 +2,13 @@ pub mod id;
 pub mod state;
 pub mod errors;
 pub mod utils;
-
 pub mod instructions;
 
+pub use instructions::*;
 pub use id::ID;
 pub use state::SplitParticipant;
+
 pub use anchor_lang::prelude::*;
-pub use instructions::*;
 
 #[program]
 pub mod splitwave {

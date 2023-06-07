@@ -20,7 +20,7 @@ pub struct UpdateSplitwave<'info> {
         ],
         bump = splitwave.bump,
         )]
-    pub splitwave: Account<'info, Splitwave>,
+    pub splitwave: Box<Account<'info, Splitwave>>,
 
 }
 

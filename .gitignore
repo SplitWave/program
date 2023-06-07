@@ -6,3 +6,10 @@ target
 **/*.rs.bk
 node_modules
 test-ledger
+xNFT_Ansh
+xNFT_Default
+xNFT_Tim
+ticket-xnft
+client
+
+

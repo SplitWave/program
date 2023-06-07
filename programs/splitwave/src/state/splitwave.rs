@@ -1,10 +1,8 @@
-use shank::ShankAccount;
-
-use crate::errors::SplitwaveError;
-
 use {
-    anchor_lang::{prelude::*, AnchorDeserialize},
+    anchor_lang::prelude::*,
     std::convert::TryFrom,
+    crate::errors::SplitwaveError,
+    shank::ShankAccount,
 };
 
 pub const SEED_SPLITWAVE: &[u8] = b"splitwave";

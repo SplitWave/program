@@ -10,7 +10,7 @@ url = "https://api.apr.dev"
 [provider]
 cluster = "https://rpc-devnet.helius.xyz/?api-key=ec0c9707-e412-45e4-9608-5a4cb6141af9"
 #cluster = "http://localhost:8899"
-wallet = "/home/abstracted/ant_labs/wallets/TempUpdateAuthority/TUAXRFzyLeXmG9wPLaMXt66jUagfrWmL9oGq4rMwjAu.json"
+wallet = "/Users/0xabstracted/Documents/wallets/TempUpdateAuthority/TUAXRFzyLeXmG9wPLaMXt66jUagfrWmL9oGq4rMwjAu.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

@@ -11,8 +11,10 @@
     "amman:stop": "./node_modules/.bin/amman stop"
   },
   "dependencies": {
+    "@coral-xyz/xnft-cli": "^0.6.8-latest.5333",
     "@project-serum/anchor": "^0.26.0",
-    "anchor-lang": "^0.0.1-security"
+    "anchor-lang": "^0.0.1-security",
+    "react-xnft": "^0.2.0-latest.3375"
   },
   "devDependencies": {
     "@metaplex-foundation/solita": "^0.19.4",
