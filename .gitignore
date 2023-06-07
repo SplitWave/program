@@ -11,5 +11,9 @@ xNFT_Default
 xNFT_Tim
 ticket-xnft
 client
+Cargo.lock
+package-lock.json
+package.json
+yarn.lock
 
 
