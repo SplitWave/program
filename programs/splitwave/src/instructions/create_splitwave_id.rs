@@ -11,12 +11,12 @@ pub struct CreateSplitwaveId<'info> {
         seeds = [SEED_SPLITWAVE_ID],
         bump
     )]
-    splitwave_id: Box<Account<'info, SplitwaveId>>,
+    pub splitwave_id: Box<Account<'info, SplitwaveId>>,
 
     #[account(mut)]
-    payer: Signer<'info>,
+    pub payer: Signer<'info>,
     pub rent: Sysvar<'info, Rent>,
-    system_program: Program<'info, System>,
+    pub system_program: Program<'info, System>,
 }
 
 pub fn handler(ctx: Context<CreateSplitwaveId>) -> Result<()> {
