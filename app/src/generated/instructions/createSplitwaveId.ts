@@ -31,6 +31,7 @@ export const createSplitwaveIdStruct = new beet.BeetArgsStruct<{
 export type CreateSplitwaveIdInstructionAccounts = {
   splitwaveId: web3.PublicKey
   payer: web3.PublicKey
+  rent?: web3.PublicKey
   systemProgram?: web3.PublicKey
   anchorRemainingAccounts?: web3.AccountMeta[]
 }
@@ -64,6 +65,11 @@ export function createCreateSplitwaveIdInstruction(
       pubkey: accounts.payer,
       isWritable: true,
       isSigner: true,
+    },
+    {
+      pubkey: accounts.rent ?? web3.SYSVAR_RENT_PUBKEY,
+      isWritable: false,
+      isSigner: false,
     },
     {
       pubkey: accounts.systemProgram ?? web3.SystemProgram.programId,

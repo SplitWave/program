@@ -20,7 +20,7 @@ import {
  */
 export type SplitwaveArgs = {
   bump: number
-  splitwaveDisbursed: boolean
+  splitwaveDisbursed: number
   splitwaveId: beet.bignum
   totalAmountToRecipient: beet.bignum
   amountPaidToSplitwaveAccount: beet.bignum
@@ -45,7 +45,7 @@ export const splitwaveDiscriminator = [39, 79, 28, 23, 116, 77, 103, 221]
 export class Splitwave implements SplitwaveArgs {
   private constructor(
     readonly bump: number,
-    readonly splitwaveDisbursed: boolean,
+    readonly splitwaveDisbursed: number,
     readonly splitwaveId: beet.bignum,
     readonly totalAmountToRecipient: beet.bignum,
     readonly amountPaidToSplitwaveAccount: beet.bignum,
@@ -265,7 +265,7 @@ export const splitwaveBeet = new beet.FixableBeetStruct<
   [
     ['accountDiscriminator', beet.uniformFixedSizeArray(beet.u8, 8)],
     ['bump', beet.u8],
-    ['splitwaveDisbursed', beet.bool],
+    ['splitwaveDisbursed', beet.u8],
     ['splitwaveId', beet.u64],
     ['totalAmountToRecipient', beet.u64],
     ['amountPaidToSplitwaveAccount', beet.u64],

@@ -11,6 +11,7 @@ import * as beetSolana from '@metaplex-foundation/beet-solana'
 export type SplitParticipant = {
   paid: boolean
   participantSplitAmount: beet.bignum
+  participant: web3.PublicKey
   participantTokenAccount: web3.PublicKey
 }
 
@@ -22,6 +23,7 @@ export const splitParticipantBeet = new beet.BeetArgsStruct<SplitParticipant>(
   [
     ['paid', beet.bool],
     ['participantSplitAmount', beet.u64],
+    ['participant', beetSolana.publicKey],
     ['participantTokenAccount', beetSolana.publicKey],
   ],
   'SplitParticipant'
