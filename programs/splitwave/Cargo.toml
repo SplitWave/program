@@ -17,7 +17,7 @@ default = []
 
 [dependencies]
 anchor-lang = { version = "0.26.0", features = ["init-if-needed"] }
-anchor-spl = { version = "0.26.0", features = ["token"] }
+anchor-spl = { version = "0.26.0", features = ["token", "metadata"] }
 spl-token = { version = "3.5.0", features = ["no-entrypoint"] }
 clockwork-sdk = { version = "~2.0.1" }
 shank = "0.0.12"

@@ -47,7 +47,7 @@ pub struct CreateSplitwave<'info> {
         bump,
         space = 8 + SIZE_OF_SPLITWAVE + SIZE_OF_PARTSPLIT * participants.len(),
     )]
-    pub splitwave: Account<'info, Splitwave>,
+    pub splitwave: Box<Account<'info, Splitwave>>,
 
     /// Splitwave instance's treasury account
     /// CHECK: Not dangerous. Account seeds checked in constraint.
@@ -57,12 +57,12 @@ pub struct CreateSplitwave<'info> {
 
     /// splitwave_mint Mint account, either native SOL mint or a SPL token mint.
     #[account()]
-    pub splitwave_mint: Account<'info, Mint>,
+    pub splitwave_mint: Box<Account<'info, Mint>>,
 
     /// splitwave_id instance
     /// constant address but the splitwave_id increments sequentially
     #[account(mut, seeds = [SEED_SPLITWAVE_ID],bump = splitwave_id.bump)]
-    pub splitwave_id: Account<'info, SplitwaveId>,
+    pub splitwave_id: Box<Account<'info, SplitwaveId>>,
     
     pub rent: Sysvar<'info, Rent>,
     pub system_program: Program<'info, System>,
@@ -209,7 +209,7 @@ pub fn handler(
     splitwave.splitwave_mint = splitwave_mint.key();
     splitwave.splitwave_treasury = splitwave_treasury.key();
     splitwave.splitwave_treasury_bump = splitwave_treasury_bump;
-    splitwave.splitwave_disbursed = false;
+    splitwave.splitwave_disbursed = 0;
     splitwave.participants = participants;
     msg!("Splitwave account initialized");
 
