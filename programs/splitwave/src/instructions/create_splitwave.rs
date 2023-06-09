@@ -209,7 +209,7 @@ pub fn handler(
     splitwave.splitwave_mint = splitwave_mint.key();
     splitwave.splitwave_treasury = splitwave_treasury.key();
     splitwave.splitwave_treasury_bump = splitwave_treasury_bump;
-    splitwave.splitwave_disbursed = false;
+    splitwave.splitwave_disbursed = 0;
     splitwave.participants = participants;
     msg!("Splitwave account initialized");
 

@@ -161,7 +161,7 @@ pub fn handler(
 
     // disburse the splitwave if all participants have paid
     if splitwave.participants_paid_to_splitwave as usize == splitwave.participants.len() &&
-        splitwave.splitwave_disbursed == false {
+        splitwave.splitwave_disbursed == 0 {
             let splitwave_treasury_seeds = [
                 SEED_SPLITWAVE_TREASURY,
                 splitwave_key.as_ref(),
@@ -207,7 +207,7 @@ pub fn handler(
                 )?;
                 msg!("splitwave sol transfer complete");
             }
-        splitwave.splitwave_disbursed = true;
+        splitwave.splitwave_disbursed = 1;
     }
 
     Ok(())

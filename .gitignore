@@ -6,10 +6,3 @@ target
 **/*.rs.bk
 node_modules
 test-ledger
-.crates
-client
-Cargo.lock
-package-lock.json
-package.json
-yarn.lock
-yarn-error.log
