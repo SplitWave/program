@@ -1,6 +1,6 @@
 {
     "name": "@splitwave/js",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Splitwave JavaScript API.",
     "main": "dist/src/generated/index.js",
     "types": "dist/src/generated/index.d.ts",
