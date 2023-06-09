@@ -35,7 +35,7 @@ pub struct PaySplitwave<'info> {
         has_one = recipient_token_account,
         has_one = splitwave_treasury,
         )]
-    pub splitwave: Account<'info, Splitwave>,
+    pub splitwave: Box<Account<'info, Splitwave>>,
 
     /// Splitwave instance's treasury account
     /// CHECK: Not dangerous. Account seeds checked in constraint.
@@ -44,7 +44,7 @@ pub struct PaySplitwave<'info> {
     
     /// splitwave_mint Mint account, either native SOL mint or a SPL token mint.
     #[account()]
-    pub splitwave_mint: Account<'info, Mint>,
+    pub splitwave_mint: Box<Account<'info, Mint>>,
 
     /// participant as signer
     #[account(mut)]
@@ -90,12 +90,6 @@ pub fn handler(
 
     let splitwave_key = splitwave.key();
 
-        let splitwave_treasury_seeds = [
-            SEED_SPLITWAVE_TREASURY,
-            splitwave_key.as_ref(),
-            &[splitwave.splitwave_treasury_bump],
-        ];
-
     if !is_native {
         
         // transfer participant token to splitwave treasury
@@ -123,7 +117,7 @@ pub fn handler(
                 token_program.to_account_info(),
                 participant.to_account_info(),
             ],
-            &[&splitwave_treasury_seeds],
+            &[],
         )?;
         // let cpi_accounts = Transfer {
         //     from: participant_token_account.to_account_info(),
@@ -146,7 +140,7 @@ pub fn handler(
                 splitwave_treasury.to_account_info(),
                 system_program.to_account_info(),
             ],
-            &[&splitwave_treasury_seeds],
+            &[],
         )?;
     };
 
@@ -167,7 +161,12 @@ pub fn handler(
 
     // disburse the splitwave if all participants have paid
     if splitwave.participants_paid_to_splitwave as usize == splitwave.participants.len() &&
-        splitwave.splitwave_disbursed == false {
+        splitwave.splitwave_disbursed == 0 {
+            let splitwave_treasury_seeds = [
+                SEED_SPLITWAVE_TREASURY,
+                splitwave_key.as_ref(),
+                &[splitwave.splitwave_treasury_bump],
+            ];
             if !is_native {
                 msg!("splitwave token transfer");
                 msg!("splitwave amount paid to splitwave account: {}", splitwave.amount_paid_to_splitwave_account);
@@ -207,7 +206,7 @@ pub fn handler(
                 )?;
                 msg!("splitwave sol transfer complete");
             }
-        splitwave.splitwave_disbursed = true;
+        splitwave.splitwave_disbursed = 1;
     }
 
     Ok(())

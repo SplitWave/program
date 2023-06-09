@@ -1,10 +1,7 @@
-use shank::ShankAccount;
-
-use crate::errors::SplitwaveError;
-
 use {
-    anchor_lang::{prelude::*, AnchorDeserialize},
+    anchor_lang::prelude::*,
     std::convert::TryFrom,
+    crate::errors::SplitwaveError,
 };
 
 pub const SEED_SPLITWAVE: &[u8] = b"splitwave";
@@ -15,15 +12,16 @@ pub const SEED_SPLITWAVE_TREASURY: &[u8] = b"splitwave-treasury";
 pub struct SplitParticipant {
     pub paid: bool, //1
     pub participant_split_amount: u64, //8
+    pub participant: Pubkey, //32
     pub participant_token_account: Pubkey, //32
 }
 
 /// Represents the state of a splitwave.
 #[account]
-#[derive(Debug, Default, PartialEq, Eq, ShankAccount)]
+#[derive(Debug, Default, PartialEq, Eq)]
 pub struct Splitwave {
     pub bump: u8, //1
-    pub splitwave_disbursed: bool, //1
+    pub splitwave_disbursed: u8, //1
     pub splitwave_id: u64, //8
     pub total_amount_to_recipient: u64, //8
     pub amount_paid_to_splitwave_account: u64, //8
@@ -38,7 +36,7 @@ pub struct Splitwave {
 }
 
 pub const SIZE_OF_SPLITWAVE: usize = 1 + 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32  + 32 + 32 + 1 + 4;
-pub const SIZE_OF_PARTSPLIT: usize = 1 + 8 + 32;
+pub const SIZE_OF_PARTSPLIT: usize = 1 + 8 + 32 + 32;
 
 impl Splitwave {
     /// Calculates the Splitwave's pubkey based on authority, mint, and recipient.
