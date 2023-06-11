@@ -16,6 +16,11 @@
           "isSigner": true
         },
         {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -265,7 +270,7 @@
           },
           {
             "name": "splitwaveDisbursed",
-            "type": "bool"
+            "type": "u8"
           },
           {
             "name": "splitwaveId",
@@ -335,6 +340,10 @@
           {
             "name": "participantSplitAmount",
             "type": "u64"
+          },
+          {
+            "name": "participant",
+            "type": "publicKey"
           },
           {
             "name": "participantTokenAccount",
@@ -547,6 +556,6 @@
     }
   ],
   "metadata": {
-    "address": "pp1aQnBZ8271r5LcZymbudhTXbExDQiH2CzDj3N6ujY"
+    "address": "pP24ZPhQLvSSri8hB5DdoUxRGRLCiYxdf5MH1s93dfd"
   }
 }
