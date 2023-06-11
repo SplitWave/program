@@ -205,6 +205,7 @@ pub fn handler(
     splitwave.total_participants = total_participants as u64;
     splitwave.participants_paid_to_splitwave = 0;
     splitwave.authority = authority.key();
+    splitwave.recipient = recipient.key();
     splitwave.recipient_token_account = recipient_token_account.key();
     splitwave.splitwave_mint = splitwave_mint.key();
     splitwave.splitwave_treasury = splitwave_treasury.key();

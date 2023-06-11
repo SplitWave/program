@@ -1,6 +1,11 @@
-use anchor_lang::prelude::*;
-
-use crate::state::{SIZE_OF_SPLITWAVE_ID, SEED_SPLITWAVE_ID, SplitwaveId};
+use {
+    anchor_lang::prelude::*,
+    crate::state::{
+        SIZE_OF_SPLITWAVE_ID, 
+        SEED_SPLITWAVE_ID, 
+        SplitwaveId
+    }
+};
 
 #[derive(Accounts)]
 pub struct CreateSplitwaveId<'info> {
