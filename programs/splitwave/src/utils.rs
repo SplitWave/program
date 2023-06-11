@@ -4,12 +4,13 @@ use anchor_lang::{
     prelude::*,
     solana_program::{
         program::invoke_signed,
-        program_memory::sol_memcmp,
+        program_memory::{sol_memcmp, sol_memset},
         program_pack::{IsInitialized, Pack},
         pubkey::PUBKEY_BYTES,
         system_instruction,
     },
 };
+
 use anchor_spl::token::{Token, Mint};
 use arrayref::array_ref;
 use spl_associated_token_account::get_associated_token_address;
@@ -217,4 +218,23 @@ pub fn get_mint_details(account_info: &AccountInfo) -> Result<(u64, u8)> {
     let decimals = array_ref![data, 44, 1];
 
     Ok((u64::from_le_bytes(*supply), u8::from_le_bytes(*decimals)))
+}
+
+pub fn close_account<'a>(
+    source_account: &AccountInfo<'a>,
+    receiver_account: &AccountInfo<'a>,
+) -> Result<()> {
+    let current_lamports = source_account.lamports();
+    let account_data_size = source_account.data_len();
+
+    **source_account.lamports.borrow_mut() = 0;
+    **receiver_account.lamports.borrow_mut() = receiver_account
+        .lamports()
+        .checked_add(current_lamports)
+        .ok_or(SplitwaveError::NumericalOverflow)?;
+
+    #[allow(clippy::explicit_auto_deref)]
+    sol_memset(*source_account.try_borrow_mut_data()?, 0, account_data_size);
+
+    Ok(())
 }

@@ -21,7 +21,6 @@ pub struct UpdateSplitwave<'info> {
         bump = splitwave.bump,
         )]
     pub splitwave: Box<Account<'info, Splitwave>>,
-
 }
 
 pub fn handler<'info>(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: Option<u64>, participants: Vec<SplitParticipant>) -> Result<()> {

@@ -54,8 +54,6 @@ pub enum SplitwaveError {
     InvalidMintSupply,
     #[msg("Invalid Mint")]
     InvalidMint,
-    #[msg("Amount Already Disbursed to Recipient")]
-    AmountAlreadyDisbursedToRecipient,
     #[msg("Duplicate Participants")]
     DuplicateParticipants,
     #[msg("Invalid Accounts")]
@@ -82,4 +80,6 @@ pub enum SplitwaveError {
     BumpSeedNotInHashMap,
     #[msg("Invalid Associated Token Account")]
     InvalidAssociatedTokenAccount,
+    #[msg("Numerical Overflow error")]
+    NumericalOverflow,
 }

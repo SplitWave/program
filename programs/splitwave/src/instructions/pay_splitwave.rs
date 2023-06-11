@@ -2,7 +2,7 @@ use {
     crate::{
         state::*,
         errors::SplitwaveError,
-        utils::assert_is_ata,
+        utils::{assert_is_ata,close_account} ,
     },
     anchor_lang::prelude::*,
     anchor_spl::token::{self, Mint},
@@ -16,7 +16,7 @@ use {
 #[instruction(participant_split_amount: u64)]
 pub struct PaySplitwave<'info> {
     /// CHECK: Authority key for the Splitwave instance.
-    #[account(address = splitwave.authority)]
+    #[account(mut, address = splitwave.authority)]
     pub authority: AccountInfo<'info>,
 
     /// CHECK: recipient token account is an ATA and belongs to the recipient if SPL Token
@@ -65,6 +65,7 @@ pub fn handler(
     ctx: Context<PaySplitwave>, 
     participant_split_amount: u64
 ) -> Result<()> {
+    let authority = &mut ctx.accounts.authority;
     let recipient_token_account = &mut ctx.accounts.recipient_token_account;
     let splitwave = &mut ctx.accounts.splitwave;
     let splitwave_treasury = &mut ctx.accounts.splitwave_treasury;
@@ -207,6 +208,10 @@ pub fn handler(
                 msg!("splitwave sol transfer complete");
             }
         splitwave.splitwave_disbursed = 1;
+        close_account(
+            &splitwave.to_account_info(),
+            &authority.to_account_info(),
+        )?;
     }
 
     Ok(())
