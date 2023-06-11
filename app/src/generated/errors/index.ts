@@ -643,39 +643,13 @@ createErrorFromCodeLookup.set(0x1789, () => new InvalidMintError())
 createErrorFromNameLookup.set('InvalidMint', () => new InvalidMintError())
 
 /**
- * AmountAlreadyDisbursedToRecipient: 'Amount Already Disbursed to Recipient'
- *
- * @category Errors
- * @category generated
- */
-export class AmountAlreadyDisbursedToRecipientError extends Error {
-  readonly code: number = 0x178a
-  readonly name: string = 'AmountAlreadyDisbursedToRecipient'
-  constructor() {
-    super('Amount Already Disbursed to Recipient')
-    if (typeof Error.captureStackTrace === 'function') {
-      Error.captureStackTrace(this, AmountAlreadyDisbursedToRecipientError)
-    }
-  }
-}
-
-createErrorFromCodeLookup.set(
-  0x178a,
-  () => new AmountAlreadyDisbursedToRecipientError()
-)
-createErrorFromNameLookup.set(
-  'AmountAlreadyDisbursedToRecipient',
-  () => new AmountAlreadyDisbursedToRecipientError()
-)
-
-/**
  * DuplicateParticipants: 'Duplicate Participants'
  *
  * @category Errors
  * @category generated
  */
 export class DuplicateParticipantsError extends Error {
-  readonly code: number = 0x178b
+  readonly code: number = 0x178a
   readonly name: string = 'DuplicateParticipants'
   constructor() {
     super('Duplicate Participants')
@@ -685,7 +659,7 @@ export class DuplicateParticipantsError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x178b, () => new DuplicateParticipantsError())
+createErrorFromCodeLookup.set(0x178a, () => new DuplicateParticipantsError())
 createErrorFromNameLookup.set(
   'DuplicateParticipants',
   () => new DuplicateParticipantsError()
@@ -698,7 +672,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class InvalidAccountsError extends Error {
-  readonly code: number = 0x178c
+  readonly code: number = 0x178b
   readonly name: string = 'InvalidAccounts'
   constructor() {
     super('Invalid Accounts')
@@ -708,7 +682,7 @@ export class InvalidAccountsError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x178c, () => new InvalidAccountsError())
+createErrorFromCodeLookup.set(0x178b, () => new InvalidAccountsError())
 createErrorFromNameLookup.set(
   'InvalidAccounts',
   () => new InvalidAccountsError()
@@ -721,7 +695,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class ParticipantNotFoundError extends Error {
-  readonly code: number = 0x178d
+  readonly code: number = 0x178c
   readonly name: string = 'ParticipantNotFound'
   constructor() {
     super('Participant not found')
@@ -731,7 +705,7 @@ export class ParticipantNotFoundError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x178d, () => new ParticipantNotFoundError())
+createErrorFromCodeLookup.set(0x178c, () => new ParticipantNotFoundError())
 createErrorFromNameLookup.set(
   'ParticipantNotFound',
   () => new ParticipantNotFoundError()
@@ -744,7 +718,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class ParticipantAlreadyPaidError extends Error {
-  readonly code: number = 0x178e
+  readonly code: number = 0x178d
   readonly name: string = 'ParticipantAlreadyPaid'
   constructor() {
     super('Participant already paid')
@@ -754,7 +728,7 @@ export class ParticipantAlreadyPaidError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x178e, () => new ParticipantAlreadyPaidError())
+createErrorFromCodeLookup.set(0x178d, () => new ParticipantAlreadyPaidError())
 createErrorFromNameLookup.set(
   'ParticipantAlreadyPaid',
   () => new ParticipantAlreadyPaidError()
@@ -767,7 +741,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class ParticipantPaidIncorrectAmountError extends Error {
-  readonly code: number = 0x178f
+  readonly code: number = 0x178e
   readonly name: string = 'ParticipantPaidIncorrectAmount'
   constructor() {
     super('Participant paid incorrect amount')
@@ -778,7 +752,7 @@ export class ParticipantPaidIncorrectAmountError extends Error {
 }
 
 createErrorFromCodeLookup.set(
-  0x178f,
+  0x178e,
   () => new ParticipantPaidIncorrectAmountError()
 )
 createErrorFromNameLookup.set(
@@ -793,7 +767,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class InvalidTokenAccountOwnerError extends Error {
-  readonly code: number = 0x1790
+  readonly code: number = 0x178f
   readonly name: string = 'InvalidTokenAccountOwner'
   constructor() {
     super('Invalid Token Account Owner')
@@ -803,7 +777,7 @@ export class InvalidTokenAccountOwnerError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1790, () => new InvalidTokenAccountOwnerError())
+createErrorFromCodeLookup.set(0x178f, () => new InvalidTokenAccountOwnerError())
 createErrorFromNameLookup.set(
   'InvalidTokenAccountOwner',
   () => new InvalidTokenAccountOwnerError()
@@ -816,7 +790,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class TokenTransferFailedError extends Error {
-  readonly code: number = 0x1791
+  readonly code: number = 0x1790
   readonly name: string = 'TokenTransferFailed'
   constructor() {
     super('Token transfer failed')
@@ -826,7 +800,7 @@ export class TokenTransferFailedError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1791, () => new TokenTransferFailedError())
+createErrorFromCodeLookup.set(0x1790, () => new TokenTransferFailedError())
 createErrorFromNameLookup.set(
   'TokenTransferFailed',
   () => new TokenTransferFailedError()
@@ -839,7 +813,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class PublicKeyMismatchError extends Error {
-  readonly code: number = 0x1792
+  readonly code: number = 0x1791
   readonly name: string = 'PublicKeyMismatch'
   constructor() {
     super('Public key mismatch')
@@ -849,7 +823,7 @@ export class PublicKeyMismatchError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1792, () => new PublicKeyMismatchError())
+createErrorFromCodeLookup.set(0x1791, () => new PublicKeyMismatchError())
 createErrorFromNameLookup.set(
   'PublicKeyMismatch',
   () => new PublicKeyMismatchError()
@@ -862,7 +836,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class UninitializedAccountError extends Error {
-  readonly code: number = 0x1793
+  readonly code: number = 0x1792
   readonly name: string = 'UninitializedAccount'
   constructor() {
     super('Uninitialized account')
@@ -872,7 +846,7 @@ export class UninitializedAccountError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1793, () => new UninitializedAccountError())
+createErrorFromCodeLookup.set(0x1792, () => new UninitializedAccountError())
 createErrorFromNameLookup.set(
   'UninitializedAccount',
   () => new UninitializedAccountError()
@@ -885,7 +859,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class IncorrectOwnerError extends Error {
-  readonly code: number = 0x1794
+  readonly code: number = 0x1793
   readonly name: string = 'IncorrectOwner'
   constructor() {
     super('Invalid account owner')
@@ -895,7 +869,7 @@ export class IncorrectOwnerError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1794, () => new IncorrectOwnerError())
+createErrorFromCodeLookup.set(0x1793, () => new IncorrectOwnerError())
 createErrorFromNameLookup.set('IncorrectOwner', () => new IncorrectOwnerError())
 
 /**
@@ -905,7 +879,7 @@ createErrorFromNameLookup.set('IncorrectOwner', () => new IncorrectOwnerError())
  * @category generated
  */
 export class DerivedKeyInvalidError extends Error {
-  readonly code: number = 0x1795
+  readonly code: number = 0x1794
   readonly name: string = 'DerivedKeyInvalid'
   constructor() {
     super('Derived Key is not a signer')
@@ -915,7 +889,7 @@ export class DerivedKeyInvalidError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1795, () => new DerivedKeyInvalidError())
+createErrorFromCodeLookup.set(0x1794, () => new DerivedKeyInvalidError())
 createErrorFromNameLookup.set(
   'DerivedKeyInvalid',
   () => new DerivedKeyInvalidError()
@@ -928,7 +902,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class BumpSeedNotInHashMapError extends Error {
-  readonly code: number = 0x1796
+  readonly code: number = 0x1795
   readonly name: string = 'BumpSeedNotInHashMap'
   constructor() {
     super('Invalid bump seed')
@@ -938,7 +912,7 @@ export class BumpSeedNotInHashMapError extends Error {
   }
 }
 
-createErrorFromCodeLookup.set(0x1796, () => new BumpSeedNotInHashMapError())
+createErrorFromCodeLookup.set(0x1795, () => new BumpSeedNotInHashMapError())
 createErrorFromNameLookup.set(
   'BumpSeedNotInHashMap',
   () => new BumpSeedNotInHashMapError()
@@ -951,7 +925,7 @@ createErrorFromNameLookup.set(
  * @category generated
  */
 export class InvalidAssociatedTokenAccountError extends Error {
-  readonly code: number = 0x1797
+  readonly code: number = 0x1796
   readonly name: string = 'InvalidAssociatedTokenAccount'
   constructor() {
     super('Invalid Associated Token Account')
@@ -962,12 +936,35 @@ export class InvalidAssociatedTokenAccountError extends Error {
 }
 
 createErrorFromCodeLookup.set(
-  0x1797,
+  0x1796,
   () => new InvalidAssociatedTokenAccountError()
 )
 createErrorFromNameLookup.set(
   'InvalidAssociatedTokenAccount',
   () => new InvalidAssociatedTokenAccountError()
+)
+
+/**
+ * NumericalOverflow: 'Numerical Overflow error'
+ *
+ * @category Errors
+ * @category generated
+ */
+export class NumericalOverflowError extends Error {
+  readonly code: number = 0x1797
+  readonly name: string = 'NumericalOverflow'
+  constructor() {
+    super('Numerical Overflow error')
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(this, NumericalOverflowError)
+    }
+  }
+}
+
+createErrorFromCodeLookup.set(0x1797, () => new NumericalOverflowError())
+createErrorFromNameLookup.set(
+  'NumericalOverflow',
+  () => new NumericalOverflowError()
 )
 
 /**

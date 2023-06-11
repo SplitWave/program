@@ -36,7 +36,7 @@ export const paySplitwaveStruct = new beet.BeetArgsStruct<
 /**
  * Accounts required by the _paySplitwave_ instruction
  *
- * @property [] authority
+ * @property [_writable_] authority
  * @property [_writable_] recipientTokenAccount
  * @property [_writable_] splitwave
  * @property [_writable_] splitwaveTreasury
@@ -86,7 +86,7 @@ export function createPaySplitwaveInstruction(
   const keys: web3.AccountMeta[] = [
     {
       pubkey: accounts.authority,
-      isWritable: false,
+      isWritable: true,
       isSigner: false,
     },
     {
