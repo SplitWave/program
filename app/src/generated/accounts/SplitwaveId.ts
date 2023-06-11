@@ -80,7 +80,7 @@ export class SplitwaveId implements SplitwaveIdArgs {
    */
   static gpaBuilder(
     programId: web3.PublicKey = new web3.PublicKey(
-      'pp1aQnBZ8271r5LcZymbudhTXbExDQiH2CzDj3N6ujY'
+      'pP24ZPhQLvSSri8hB5DdoUxRGRLCiYxdf5MH1s93dfd'
     )
   ) {
     return beetSolana.GpaBuilder.fromStruct(programId, splitwaveIdBeet)

@@ -50,7 +50,7 @@ export const createSplitwaveIdInstructionDiscriminator = [
  */
 export function createCreateSplitwaveIdInstruction(
   accounts: CreateSplitwaveIdInstructionAccounts,
-  programId = new web3.PublicKey('pp1aQnBZ8271r5LcZymbudhTXbExDQiH2CzDj3N6ujY')
+  programId = new web3.PublicKey('pP24ZPhQLvSSri8hB5DdoUxRGRLCiYxdf5MH1s93dfd')
 ) {
   const [data] = createSplitwaveIdStruct.serialize({
     instructionDiscriminator: createSplitwaveIdInstructionDiscriminator,

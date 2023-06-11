@@ -2,7 +2,7 @@
 seeds = false
 skip-lint = false
 [programs.devnet]
-splitwave = "pp1aQnBZ8271r5LcZymbudhTXbExDQiH2CzDj3N6ujY"
+splitwave = "pP24ZPhQLvSSri8hB5DdoUxRGRLCiYxdf5MH1s93dfd"
 
 [registry]
 url = "https://api.apr.dev"

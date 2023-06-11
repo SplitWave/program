@@ -16,6 +16,11 @@ export type Splitwave = {
           "isSigner": true
         },
         {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -265,7 +270,7 @@ export type Splitwave = {
           },
           {
             "name": "splitwaveDisbursed",
-            "type": "bool"
+            "type": "u8"
           },
           {
             "name": "splitwaveId",
@@ -335,6 +340,10 @@ export type Splitwave = {
           {
             "name": "participantSplitAmount",
             "type": "u64"
+          },
+          {
+            "name": "participant",
+            "type": "publicKey"
           },
           {
             "name": "participantTokenAccount",
@@ -566,6 +575,11 @@ export const IDL: Splitwave = {
           "isSigner": true
         },
         {
+          "name": "rent",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
           "name": "systemProgram",
           "isMut": false,
           "isSigner": false
@@ -815,7 +829,7 @@ export const IDL: Splitwave = {
           },
           {
             "name": "splitwaveDisbursed",
-            "type": "bool"
+            "type": "u8"
           },
           {
             "name": "splitwaveId",
@@ -885,6 +899,10 @@ export const IDL: Splitwave = {
           {
             "name": "participantSplitAmount",
             "type": "u64"
+          },
+          {
+            "name": "participant",
+            "type": "publicKey"
           },
           {
             "name": "participantTokenAccount",
