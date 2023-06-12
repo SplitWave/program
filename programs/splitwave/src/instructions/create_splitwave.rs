@@ -201,6 +201,7 @@ pub fn handler(
     let bump = *ctx.bumps.get("splitwave").unwrap();
     splitwave.bump = bump;
     splitwave.splitwave_id = splitwave_id.next_id;
+    splitwave.splitwave_id_key = splitwave_id.key();
     splitwave.total_amount_to_recipient = total_amount_to_recipient;
     splitwave.amount_paid_to_splitwave_account = 0;
     splitwave.total_participants = total_participants as u64;
