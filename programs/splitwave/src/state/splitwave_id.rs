@@ -1,16 +1,11 @@
 use anchor_lang::prelude::*;
 use shank::ShankAccount;
 
-
-pub const SEED_SPLITWAVE_ID: &[u8] = b"splitwave-id";
-
-
 /// Represents the state of a splitwave.
 #[account]
 #[derive(Debug, Default, PartialEq, Eq, ShankAccount)]
 pub struct SplitwaveId {
-    pub bump: u8, //1
-    pub splitwave_id: u64, //24
+    pub next_id: u64 //8
 }
 
-pub const SIZE_OF_SPLITWAVE_ID: usize = 1 + 8;
+pub const SIZE_OF_SPLITWAVE_ID: usize = 8;

@@ -2,7 +2,6 @@ use {
     anchor_lang::prelude::*,
     crate::state::{
         SIZE_OF_SPLITWAVE_ID, 
-        SEED_SPLITWAVE_ID, 
         SplitwaveId
     }
 };
@@ -12,9 +11,7 @@ pub struct CreateSplitwaveId<'info> {
     #[account(
         init,
         payer = payer,
-        space = 8 + SIZE_OF_SPLITWAVE_ID,
-        seeds = [SEED_SPLITWAVE_ID],
-        bump
+        space = 8 + SIZE_OF_SPLITWAVE_ID
     )]
     pub splitwave_id: Box<Account<'info, SplitwaveId>>,
 
@@ -26,10 +23,7 @@ pub struct CreateSplitwaveId<'info> {
 
 pub fn handler(ctx: Context<CreateSplitwaveId>) -> Result<()> {
     let splitwave_id = &mut ctx.accounts.splitwave_id;
-    splitwave_id.bump = *ctx.bumps.get("splitwave_id").unwrap();
-    // splitwave_id.count = 1;
-    splitwave_id.splitwave_id = 1;
-    // splitwave_id.splitwave_id = "1".to_string();
+    splitwave_id.next_id = 1;
 
     Ok(())
 }

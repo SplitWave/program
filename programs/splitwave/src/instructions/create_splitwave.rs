@@ -41,8 +41,9 @@ pub struct CreateSplitwave<'info> {
         init,
         payer = authority,
         seeds = [
-            SEED_SPLITWAVE, 
-            splitwave_id.splitwave_id.to_le_bytes().as_ref(),
+            SEED_SPLITWAVE,
+            splitwave_id.key().as_ref(),
+            splitwave_id.next_id.to_le_bytes().as_ref(),
         ],
         bump,
         space = 8 + SIZE_OF_SPLITWAVE + SIZE_OF_PARTSPLIT * participants.len(),
@@ -61,7 +62,7 @@ pub struct CreateSplitwave<'info> {
 
     /// splitwave_id instance
     /// constant address but the splitwave_id increments sequentially
-    #[account(mut, seeds = [SEED_SPLITWAVE_ID],bump = splitwave_id.bump)]
+    #[account(mut)]
     pub splitwave_id: Box<Account<'info, SplitwaveId>>,
     
     pub rent: Sysvar<'info, Rent>,
@@ -199,7 +200,7 @@ pub fn handler(
     
     let bump = *ctx.bumps.get("splitwave").unwrap();
     splitwave.bump = bump;
-    splitwave.splitwave_id = splitwave_id.splitwave_id;
+    splitwave.splitwave_id = splitwave_id.next_id;
     splitwave.total_amount_to_recipient = total_amount_to_recipient;
     splitwave.amount_paid_to_splitwave_account = 0;
     splitwave.total_participants = total_participants as u64;
@@ -214,7 +215,7 @@ pub fn handler(
     splitwave.participants = participants;
     msg!("Splitwave account initialized");
 
-    splitwave_id.splitwave_id += 1;
+    splitwave_id.next_id += 1;
     msg!("Splitwave id incremented");
     
     Ok(())
