@@ -27,6 +27,7 @@ export type SplitwaveArgs = {
   totalParticipants: beet.bignum
   participantsPaidToSplitwave: beet.bignum
   authority: web3.PublicKey
+  recipient: web3.PublicKey
   recipientTokenAccount: web3.PublicKey
   splitwaveMint: web3.PublicKey
   splitwaveTreasury: web3.PublicKey
@@ -52,6 +53,7 @@ export class Splitwave implements SplitwaveArgs {
     readonly totalParticipants: beet.bignum,
     readonly participantsPaidToSplitwave: beet.bignum,
     readonly authority: web3.PublicKey,
+    readonly recipient: web3.PublicKey,
     readonly recipientTokenAccount: web3.PublicKey,
     readonly splitwaveMint: web3.PublicKey,
     readonly splitwaveTreasury: web3.PublicKey,
@@ -72,6 +74,7 @@ export class Splitwave implements SplitwaveArgs {
       args.totalParticipants,
       args.participantsPaidToSplitwave,
       args.authority,
+      args.recipient,
       args.recipientTokenAccount,
       args.splitwaveMint,
       args.splitwaveTreasury,
@@ -243,6 +246,7 @@ export class Splitwave implements SplitwaveArgs {
         return x
       })(),
       authority: this.authority.toBase58(),
+      recipient: this.recipient.toBase58(),
       recipientTokenAccount: this.recipientTokenAccount.toBase58(),
       splitwaveMint: this.splitwaveMint.toBase58(),
       splitwaveTreasury: this.splitwaveTreasury.toBase58(),
@@ -272,6 +276,7 @@ export const splitwaveBeet = new beet.FixableBeetStruct<
     ['totalParticipants', beet.u64],
     ['participantsPaidToSplitwave', beet.u64],
     ['authority', beetSolana.publicKey],
+    ['recipient', beetSolana.publicKey],
     ['recipientTokenAccount', beetSolana.publicKey],
     ['splitwaveMint', beetSolana.publicKey],
     ['splitwaveTreasury', beetSolana.publicKey],

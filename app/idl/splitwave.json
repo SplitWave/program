@@ -132,7 +132,7 @@
       "accounts": [
         {
           "name": "authority",
-          "isMut": false,
+          "isMut": true,
           "isSigner": false
         },
         {
@@ -294,6 +294,10 @@
           },
           {
             "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "recipient",
             "type": "publicKey"
           },
           {
@@ -486,73 +490,73 @@
     },
     {
       "code": 6026,
-      "name": "AmountAlreadyDisbursedToRecipient",
-      "msg": "Amount Already Disbursed to Recipient"
-    },
-    {
-      "code": 6027,
       "name": "DuplicateParticipants",
       "msg": "Duplicate Participants"
     },
     {
-      "code": 6028,
+      "code": 6027,
       "name": "InvalidAccounts",
       "msg": "Invalid Accounts"
     },
     {
-      "code": 6029,
+      "code": 6028,
       "name": "ParticipantNotFound",
       "msg": "Participant not found"
     },
     {
-      "code": 6030,
+      "code": 6029,
       "name": "ParticipantAlreadyPaid",
       "msg": "Participant already paid"
     },
     {
-      "code": 6031,
+      "code": 6030,
       "name": "ParticipantPaidIncorrectAmount",
       "msg": "Participant paid incorrect amount"
     },
     {
-      "code": 6032,
+      "code": 6031,
       "name": "InvalidTokenAccountOwner",
       "msg": "Invalid Token Account Owner"
     },
     {
-      "code": 6033,
+      "code": 6032,
       "name": "TokenTransferFailed",
       "msg": "Token transfer failed"
     },
     {
-      "code": 6034,
+      "code": 6033,
       "name": "PublicKeyMismatch",
       "msg": "Public key mismatch"
     },
     {
-      "code": 6035,
+      "code": 6034,
       "name": "UninitializedAccount",
       "msg": "Uninitialized account"
     },
     {
-      "code": 6036,
+      "code": 6035,
       "name": "IncorrectOwner",
       "msg": "Invalid account owner"
     },
     {
-      "code": 6037,
+      "code": 6036,
       "name": "DerivedKeyInvalid",
       "msg": "Derived Key is not a signer"
     },
     {
-      "code": 6038,
+      "code": 6037,
       "name": "BumpSeedNotInHashMap",
       "msg": "Invalid bump seed"
     },
     {
-      "code": 6039,
+      "code": 6038,
       "name": "InvalidAssociatedTokenAccount",
       "msg": "Invalid Associated Token Account"
+    },
+    {
+      "code": 6039,
+      "name": "NumericalOverflow",
+      "msg": "Numerical Overflow error"
     }
   ],
   "metadata": {
