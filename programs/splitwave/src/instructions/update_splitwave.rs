@@ -80,5 +80,19 @@ pub fn handler<'info>(ctx: Context<UpdateSplitwave>, total_amount_to_recipient: 
     
     splitwave.participants = participants;
     splitwave.total_participants = total_participants as u64;
+    emit!(SplitwaveEvent { 
+        ix_type: SplitwaveIxType::UpdateSplitwave, 
+        splitwave_id: splitwave.splitwave_id, 
+        splitwave_disbursed: splitwave.splitwave_disbursed,
+        total_amount_to_recipient: splitwave.total_amount_to_recipient, 
+        amount_paid_to_splitwave_account: splitwave.amount_paid_to_splitwave_account, 
+        total_participants: splitwave.total_participants, 
+        participants_paid_to_splitwave: splitwave.participants_paid_to_splitwave, 
+        authority: splitwave.authority, 
+        recipient: splitwave.recipient, 
+        recipient_token_account: splitwave.recipient_token_account,
+        splitwave_mint: splitwave.splitwave_mint, 
+        participants : splitwave.participants.clone(),
+    });
     Ok(())
 }

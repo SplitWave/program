@@ -62,3 +62,30 @@ impl TryFrom<Vec<u8>> for Splitwave {
         Splitwave::try_deserialize(&mut data.as_slice()).map_err(|_| SplitwaveError::DeserializationError)
     }
 }
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, PartialEq, Eq, Debug)]
+pub enum SplitwaveIxType {
+    CreateSplitwaveId,
+    CreateSplitwave,
+    PaySplitwave,
+    UpdateSplitwave,
+    DisburseSplitwave,
+    CancelSplitwave,
+}
+
+#[event]
+#[derive(Debug, PartialEq, Eq, Clone)]
+pub struct SplitwaveEvent {
+    pub ix_type: SplitwaveIxType,
+    pub splitwave_id: u64,
+    pub splitwave_disbursed: u8,
+    pub total_amount_to_recipient: u64,
+    pub amount_paid_to_splitwave_account: u64,
+    pub total_participants: u64,
+    pub participants_paid_to_splitwave: u64,
+    pub authority: Pubkey,
+    pub recipient: Pubkey,
+    pub recipient_token_account: Pubkey,
+    pub splitwave_mint: Pubkey,
+    pub participants: Vec<SplitParticipant>,
+}

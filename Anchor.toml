@@ -8,8 +8,11 @@ splitwave = "pP24ZPhQLvSSri8hB5DdoUxRGRLCiYxdf5MH1s93dfd"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
-wallet = "/root/.config/solana/id.json"
+#cluster = "devnet"
+#wallet = "/root/.config/solana/id.json"
+#cluster = "https://rpc-devnet.helius.xyz/?api-key=ec0c9707-e412-45e4-9608-5a4cb6141af9"
+cluster = "https://rpc-devnet.helius.xyz/?api-key=7c45b0ae-2e65-4ef0-b68c-defcf9f5b581"
+wallet = "/Users/0xabstracted/Documents/wallets/TempUpdateAuthority/TUAXRFzyLeXmG9wPLaMXt66jUagfrWmL9oGq4rMwjAu.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

@@ -2,7 +2,7 @@ use {
     crate::{
         state::*,
         errors::SplitwaveError,
-        utils::{assert_is_ata,close_account} ,
+        utils::{assert_is_ata} ,
     },
     anchor_lang::prelude::*,
     anchor_spl::token::{self, Mint},
@@ -65,7 +65,6 @@ pub fn handler(
     ctx: Context<PaySplitwave>, 
     participant_split_amount: u64
 ) -> Result<()> {
-    let authority = &mut ctx.accounts.authority;
     let recipient_token_account = &mut ctx.accounts.recipient_token_account;
     let splitwave = &mut ctx.accounts.splitwave;
     let splitwave_treasury = &mut ctx.accounts.splitwave_treasury;
@@ -159,6 +158,20 @@ pub fn handler(
     msg!("splitwave amount paid to splitwave account: {}", splitwave.amount_paid_to_splitwave_account);
     msg!("Participant paid to splitwave account");
     
+    emit!(SplitwaveEvent { 
+        ix_type: SplitwaveIxType::PaySplitwave, 
+        splitwave_id: splitwave.splitwave_id, 
+        splitwave_disbursed: splitwave.splitwave_disbursed,
+        total_amount_to_recipient: splitwave.total_amount_to_recipient, 
+        amount_paid_to_splitwave_account: splitwave.amount_paid_to_splitwave_account, 
+        total_participants: splitwave.total_participants, 
+        participants_paid_to_splitwave: splitwave.participants_paid_to_splitwave, 
+        authority: splitwave.authority, 
+        recipient: splitwave.recipient, 
+        recipient_token_account: splitwave.recipient_token_account,
+        splitwave_mint: splitwave.splitwave_mint, 
+        participants : splitwave.participants.clone(),
+    });
 
     // disburse the splitwave if all participants have paid
     if splitwave.participants_paid_to_splitwave as usize == splitwave.participants.len() &&
@@ -208,10 +221,24 @@ pub fn handler(
                 msg!("splitwave sol transfer complete");
             }
         splitwave.splitwave_disbursed = 1;
-        close_account(
-            &splitwave.to_account_info(),
-            &authority.to_account_info(),
-        )?;
+        emit!(SplitwaveEvent { 
+            ix_type: SplitwaveIxType::DisburseSplitwave, 
+            splitwave_id: splitwave.splitwave_id, 
+            splitwave_disbursed: splitwave.splitwave_disbursed,
+            total_amount_to_recipient: splitwave.total_amount_to_recipient, 
+            amount_paid_to_splitwave_account: splitwave.amount_paid_to_splitwave_account, 
+            total_participants: splitwave.total_participants, 
+            participants_paid_to_splitwave: splitwave.participants_paid_to_splitwave, 
+            authority: splitwave.authority, 
+            recipient: splitwave.recipient, 
+            recipient_token_account: splitwave.recipient_token_account,
+            splitwave_mint: splitwave.splitwave_mint, 
+            participants : splitwave.participants.clone(),
+        });
+        // close_account(
+        //     &splitwave.to_account_info(),
+        //     &authority.to_account_info(),
+        // )?;
     }
 
     Ok(())
