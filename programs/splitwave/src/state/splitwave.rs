@@ -23,6 +23,7 @@ pub struct Splitwave {
     pub bump: u8, //1
     pub splitwave_disbursed: u8, //1
     pub splitwave_id: u64, //8
+    pub splitwave_id_key: Pubkey, //32
     pub total_amount_to_recipient: u64, //8
     pub amount_paid_to_splitwave_account: u64, //8
     pub total_participants: u64, //8
@@ -36,7 +37,7 @@ pub struct Splitwave {
     pub participants: Vec<SplitParticipant>, //4
 }
 
-pub const SIZE_OF_SPLITWAVE: usize = 1 + 1 + 8 + 8 + 8 + 8 + 8 + 32 + 32 + 32 + 32 + 32 + 1 + 4;
+pub const SIZE_OF_SPLITWAVE: usize = 1 + 1 + 8 + 32 + 8 + 8 + 8 + 8 + 32 + 32 + 32 + 32 + 32 + 1 + 4;
 pub const SIZE_OF_PARTSPLIT: usize = 1 + 8 + 32 + 32;
 
 impl Splitwave {
